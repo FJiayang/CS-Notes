@@ -2420,21 +2420,13 @@ public int climbStairs(int n) {
 
 ```java
 public int rob(int[] nums) {
-    int n = nums.length;
-    if (n == 0) {
-        return 0;
-    }
-    if (n == 1) {
-        return nums[0];
-    }
-    int pre3 = 0, pre2 = 0, pre1 = 0;
-    for (int i = 0; i < n; i++) {
-        int cur = Math.max(pre2, pre3) + nums[i];
-        pre3 = pre2;
+    int pre2 = 0, pre1 = 0;
+    for (int i = 0; i < nums.length; i++) {
+        int cur = Math.max(pre2 + nums[i], pre1);
         pre2 = pre1;
         pre1 = cur;
     }
-    return Math.max(pre1, pre2);
+    return pre1;
 }
 ```
 
@@ -2443,7 +2435,7 @@ public int rob(int[] nums) {
 [213. House Robber II (Medium)](https://leetcode.com/problems/house-robber-ii/description/)
 
 ```java
-public int rob(int[] nums) {
+public  int rob(int[] nums) {
     if (nums == null || nums.length == 0) {
         return 0;
     }
@@ -2454,15 +2446,14 @@ public int rob(int[] nums) {
     return Math.max(rob(nums, 0, n - 2), rob(nums, 1, n - 1));
 }
 
-private int rob(int[] nums, int first, int last) {
-    int pre3 = 0, pre2 = 0, pre1 = 0;
+private   int rob(int[] nums, int first, int last) {
+    int pre2 = 0, pre1 = 0;
     for (int i = first; i <= last; i++) {
-        int cur = Math.max(pre3, pre2) + nums[i];
-        pre3 = pre2;
+        int cur = Math.max(pre1, pre2 + nums[i]);
         pre2 = pre1;
         pre1 = cur;
     }
-    return Math.max(pre2, pre1);
+    return pre1;
 }
 ```
 
@@ -2790,7 +2781,7 @@ return ret;
 定义一个 tails 数组，其中 tails[i] 存储长度为 i + 1 的最长递增子序列的最后一个元素。对于一个元素 x，
 
 - 如果它大于 tails 数组所有的值，那么把它添加到 tails 后面，表示最长递增子序列长度加 1；
-- 如果 tails[i-1] < x <= tails[i]，那么更新 tails[i-1] = x。
+- 如果 tails[i-1] < x <= tails[i]，那么更新 tails[i] = x。
 
 例如对于数组 [4,3,6,5]，有：
 
@@ -3095,7 +3086,6 @@ public int findTargetSumWays(int[] nums, int S) {
     int W = (sum + S) / 2;
     int[] dp = new int[W + 1];
     dp[0] = 1;
-    Arrays.sort(nums);
     for (int num : nums) {
         for (int i = W; i >= num; i--) {
             dp[i] = dp[i] + dp[i - num];
@@ -3602,7 +3592,7 @@ public int countPrimes(int n) {
 
 ```java
 int gcd(int a, int b) {
-    return b == 0 ? a : gcd(b, a% b);
+    return b == 0 ? a : gcd(b, a % b);
 }
 ```
 
@@ -3673,7 +3663,7 @@ public String convertToBase7(int num) {
 }
 ```
 
-Java 中 static String toString(int num, int radix) 可以将一个整数转换为 redix 进制表示的字符串。
+Java 中 static String toString(int num, int radix) 可以将一个整数转换为 radix 进制表示的字符串。
 
 ```java
 public String convertToBase7(int num) {
@@ -6403,7 +6393,6 @@ public int maxChunksToSorted(int[] arr) {
 }
 ```
 
-
 ## 图
 
 ### 二分图
@@ -6620,6 +6609,7 @@ public int[] findRedundantConnection(int[][] edges) {
 }
 
 private class UF {
+
     private int[] id;
 
     UF(int N) {
@@ -6665,7 +6655,7 @@ x ^ x = 0       x & x = x       x | x = x
 ```
 
 - 利用 x ^ 1s = \~x 的特点，可以将位级表示翻转；利用 x ^ x = 0 的特点，可以将三个数中重复的两个数去除，只留下另一个数。
-- 利用 x & 0s = 0 和 x & 1s = x 的特点，可以实现掩码操作。一个数 num 与 mask ：00111100 进行位与操作，只保留 num 中与 mask 的 1 部分相对应的位。
+- 利用 x & 0s = 0 和 x & 1s = x 的特点，可以实现掩码操作。一个数 num 与 mask：00111100 进行位与操作，只保留 num 中与 mask 的 1 部分相对应的位。
 - 利用 x | 0s = x 和 x | 1s = 1s 的特点，可以实现设值操作。一个数 num 与 mask：00111100 进行位或操作，将 num 中与 mask 的 1 部分相对应的位都设置为 1。
 
 位与运算技巧：
@@ -6910,7 +6900,6 @@ public boolean isPowerOfFour(int num) {
 }
 ```
 
-
 **判断一个数的位级表示是否不会出现连续的 0 和 1** 
 
 [693. Binary Number with Alternating Bits (Easy)](https://leetcode.com/problems/binary-number-with-alternating-bits/description/)
@@ -7064,4 +7053,3 @@ public int[] countBits(int num) {
 - 何海涛, 软件工程师. 剑指 Offer: 名企面试官精讲典型编程题[M]. 电子工业出版社, 2014.
 - 《编程之美》小组. 编程之美[M]. 电子工业出版社, 2008.
 - 左程云. 程序员代码面试指南[M]. 电子工业出版社, 2015.
-
